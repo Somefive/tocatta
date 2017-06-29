@@ -1,0 +1,23 @@
+{
+  "name": "tocatta",
+  "version": "1.0.0",
+  "description": "An app for HCMP display on browsers.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Somefive/tocatta.git"
+  },
+  "keywords": [
+    "HCMP",
+    "Computer-Music"
+  ],
+  "author": "Somefive",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Somefive/tocatta/issues"
+  },
+  "homepage": "https://github.com/Somefive/tocatta#readme"
+}
