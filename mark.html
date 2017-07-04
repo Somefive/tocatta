@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/mark.css"/>
+    <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css"/>
+    <title>Mark</title>
+    <script data-main="dist/mark" src="lib/require.min.js"></script>
+</head>
+<body>
+<div class="mark-container" id="tocatta-app">
+    <div class="menu-bar">
+        <input type="file" class="btn image-input-btn" id="btn-read-image" onchange="readImage(this.files[0])" hidden accept=".jpg, .jpeg, .png, .gif">
+        <button class="btn menu-btn" @click="openReadImageDialog">ReadImage</button>
+        <button class="btn menu-btn" @click="autoGenerate">AutoLoad</button>
+    </div>
+    <canvas id="page-canvas">
+
+    </canvas>
+    <div id="divs">
+        <system-items v-bind:systems="systems"></system-items>
+    </div>
+</div>
+</body>
+</html>

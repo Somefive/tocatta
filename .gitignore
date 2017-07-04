@@ -1,0 +1,6 @@
+.idea/
+node_modules/
+dist/
+font-awesome/
+!font-awesome/css
+!font-awesome/fonts

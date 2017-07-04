@@ -1,5 +1,5 @@
 {
-  "name": "tocatta",
+  "name": "@somefive/tocatta",
   "version": "1.0.0",
   "description": "An app for HCMP display on browsers.",
   "main": "index.js",
@@ -19,5 +19,14 @@
   "bugs": {
     "url": "https://github.com/Somefive/tocatta/issues"
   },
-  "homepage": "https://github.com/Somefive/tocatta#readme"
+  "homepage": "https://github.com/Somefive/tocatta#readme",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.5.2"
+  },
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "lodash": "^4.17.4",
+    "vue": "^2.3.4"
+  }
 }
