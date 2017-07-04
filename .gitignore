@@ -1,5 +1,5 @@
 .idea/
 node_modules/
-font-awesome/
+font-awesome/*
 !font-awesome/css
 !font-awesome/fonts
