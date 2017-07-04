@@ -68,6 +68,7 @@ Vue.component('system-item',{
 				<div class="sector-edit-btn trash-btn" v-on:click="remove" v-show="systemEditable"><i class="fa fa-trash"></i></div>
 				<div class="sector-edit-btn change-visibility-btn" v-on:click="changeMeasureVisibility"><i class="fa" v-bind:class="visibilityClass"></i></div>
 				<div class="sector-edit-btn change-editability-btn" v-on:click="changeMeasureEditability" v-show="measureVisible"><i class="fa fa-edit"></i></div>
+				<div class="sector-edit-btn calculate-btn" v-on:click="recalculateMeasures" v-show="measureEditable"><i class="fa fa-calculator"></i></div>
 			</div>`,
 	data: function() {
 		return {
@@ -82,6 +83,9 @@ Vue.component('system-item',{
 		visibilityClass: function() { return this.measureVisible?"fa-eye-slash":"fa-eye"}
 	},
 	methods: {
+		recalculateMeasures: function() {
+			sectorManager.calcMeasures(this.system);
+		},
 		changeMeasureVisibility: function() {
 			if (this.measureVisible) this.mode = "visible";
 			else this.mode = "view-measure";

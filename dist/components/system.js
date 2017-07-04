@@ -41,7 +41,7 @@ Vue.component('measure-item', {
 });
 Vue.component('system-item', {
 	props: ['system', 'editable'],
-	template: '<div class="widget system" @click="click" v-show="systemVisible"\n\t\t\t\tv-bind:style="{top: system.y + \'px\', height: system.height + \'px\'}">\n\t\t\t\t<div class="up-stretch vertical-boundary-stretch" v-show="systemEditable"\n\t\t\t\t\t@mousemove="upDrag" @mousedown="upDragStart"\n\t\t\t\t\t@mouseup="upDragEnd" @mouseleave="upDragEnd">\n\t\t\t\t\t<i class="fa fa-angle-up"></i></div>\n\t\t\t\t<div class="down-stretch vertical-boundary-stretch" v-show="systemEditable"\n\t\t\t\t\t@mousemove="downDrag" @mousedown="downDragStart"\n\t\t\t\t\t@mouseup="downDragEnd" @mouseleave="downDragEnd">\n\t\t\t\t\t<i class="fa fa-angle-down"></i></div>\n\t\t\t\t<measure-item v-bind:editable="measureEditable" v-on:remove="removeMeasure"\n\t\t\t\t\tv-for="measure in system.measures" v-bind:measure="measure"\n\t\t\t\t\tv-bind:style="{left: measure.start + \'px\', width: (measure.end-measure.start+1) + \'px\'}"\n\t\t\t\t\tv-show="measureVisible"></measure-item>\n\t\t\t\t<div class="sector-edit-btn trash-btn" v-on:click="remove" v-show="systemEditable"><i class="fa fa-trash"></i></div>\n\t\t\t\t<div class="sector-edit-btn change-visibility-btn" v-on:click="changeMeasureVisibility"><i class="fa" v-bind:class="visibilityClass"></i></div>\n\t\t\t\t<div class="sector-edit-btn change-editability-btn" v-on:click="changeMeasureEditability" v-show="measureVisible"><i class="fa fa-edit"></i></div>\n\t\t\t</div>',
+	template: '<div class="widget system" @click="click" v-show="systemVisible"\n\t\t\t\tv-bind:style="{top: system.y + \'px\', height: system.height + \'px\'}">\n\t\t\t\t<div class="up-stretch vertical-boundary-stretch" v-show="systemEditable"\n\t\t\t\t\t@mousemove="upDrag" @mousedown="upDragStart"\n\t\t\t\t\t@mouseup="upDragEnd" @mouseleave="upDragEnd">\n\t\t\t\t\t<i class="fa fa-angle-up"></i></div>\n\t\t\t\t<div class="down-stretch vertical-boundary-stretch" v-show="systemEditable"\n\t\t\t\t\t@mousemove="downDrag" @mousedown="downDragStart"\n\t\t\t\t\t@mouseup="downDragEnd" @mouseleave="downDragEnd">\n\t\t\t\t\t<i class="fa fa-angle-down"></i></div>\n\t\t\t\t<measure-item v-bind:editable="measureEditable" v-on:remove="removeMeasure"\n\t\t\t\t\tv-for="measure in system.measures" v-bind:measure="measure"\n\t\t\t\t\tv-bind:style="{left: measure.start + \'px\', width: (measure.end-measure.start+1) + \'px\'}"\n\t\t\t\t\tv-show="measureVisible"></measure-item>\n\t\t\t\t<div class="sector-edit-btn trash-btn" v-on:click="remove" v-show="systemEditable"><i class="fa fa-trash"></i></div>\n\t\t\t\t<div class="sector-edit-btn change-visibility-btn" v-on:click="changeMeasureVisibility"><i class="fa" v-bind:class="visibilityClass"></i></div>\n\t\t\t\t<div class="sector-edit-btn change-editability-btn" v-on:click="changeMeasureEditability" v-show="measureVisible"><i class="fa fa-edit"></i></div>\n\t\t\t\t<div class="sector-edit-btn calculate-btn" v-on:click="recalculateMeasures" v-show="measureEditable"><i class="fa fa-calculator"></i></div>\n\t\t\t</div>',
 	data: function data() {
 		return {
 			mode: "visible"
@@ -65,6 +65,9 @@ Vue.component('system-item', {
 		}
 	},
 	methods: {
+		recalculateMeasures: function recalculateMeasures() {
+			sectorManager.calcMeasures(this.system);
+		},
 		changeMeasureVisibility: function changeMeasureVisibility() {
 			if (this.measureVisible) this.mode = "visible";else this.mode = "view-measure";
 		},
