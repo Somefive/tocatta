@@ -13,6 +13,14 @@ var System = function System(y, height) {
 
 	this.y = y;
 	this.height = height;
+	this.measures = [];
+};
+
+var Measure = function Measure(start, end) {
+	_classCallCheck(this, Measure);
+
+	this.start = start;
+	this.end = end;
 };
 
 var BaseCanvas = function () {
@@ -54,6 +62,7 @@ var SectorManager = function () {
 		value: function load(imageData) {
 			this.imageData = imageData;
 			this.rcd = new ReshapedColorData(imageData);
+			app.systems.splice(0, app.systems.length);
 		}
 	}, {
 		key: 'calcSystems',
@@ -70,7 +79,19 @@ var SectorManager = function () {
 			if (calculate) this.calcSystems();
 			app.systems.splice(0, app.systems.length);
 			this.cbs.forEach(function (e) {
-				app.systems.push(new System(e[0], e[1]));
+				app.systems.push(e);
+			});
+		}
+	}, {
+		key: 'calcMeasures',
+		value: function calcMeasures() {
+			var _this = this;
+
+			var system = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+			var systems = system ? [system] : this.cbs;
+			systems.forEach(function (e) {
+				ImageProcess.getColumnContinuousLines(_this.rcd, e, 0.7, 0.7, 1, 5);
 			});
 		}
 	}]);

@@ -1,0 +1,87 @@
+.vertical-boundary-stretch {
+    /*z-index: 1025;*/
+    width: 100%;
+    height: 15px;
+    text-align: center;
+    position: absolute;
+    background: rgba(255,255,255,0.3);
+}
+.vertical-boundary-stretch:hover {
+    cursor: pointer;
+    background: rgba(255,255,255,0.6);
+}
+.up-stretch {
+    top: 0;
+}
+.down-stretch {
+    bottom: 0;
+}
+.widget.system {
+    z-index: 1020;
+    width: 100%;
+    left: 0;
+    background: rgba(127,127,127,0.15);
+}
+
+#div-systems {
+    position: absolute;
+    z-index: 1010;
+    width: 100%;
+    height: 100%;
+}
+
+.measure {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    z-index: 1040;
+    background: rgba(126, 126, 204, 0.3);
+}
+.horizontal-boundary-stretch {
+    height: 100%;
+    position: absolute;
+    text-align: center;
+    background: rgba(126, 126, 204, 0.3);
+    width: 15px;
+}
+.horizontal-boundary-stretch:hover {
+    cursor: pointer;
+    background: rgba(126, 126, 204, 0.6);
+}
+.left-stretch {
+    left: 0;
+}
+.right-stretch {
+    right: 0;
+}
+.center-align {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+}
+.sector-edit-btn {
+    background: transparent;
+    font-size: 15px;
+    color: black;
+    text-align: right;
+    position: relative;
+    top: 0;
+    float: right;
+    margin: 0 2px;
+}
+.sector-edit-btn:hover {
+    cursor: pointer;
+}
+.close-btn:hover {
+    color: red;
+}
+.trash-btn:hover {
+    color: slategrey;
+}
+.change-visibility-btn:hover {
+    color: green;
+}
+.change-editability-btn:hover {
+    color: darkgoldenrod;
+}

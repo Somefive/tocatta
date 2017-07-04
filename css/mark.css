@@ -53,63 +53,11 @@ canvas, #divs {
     z-index: 600;
     background: rgba(128,128,128,0.3);
 }
-#mark-canvas {
-    z-index: 700;
-    opacity: 0.8;
-}
-#sector-canvas {
-    z-index: 750;
-    opacity: 0.75;
-}
+
 #divs {
+    position: absolute;
     z-index: 1000;
-}
-#div-systems {
-    z-index: 1010;
-    width: 100%;
-    height: 100%;
 }
 .widget {
     position: absolute;
-}
-.widget.system {
-    z-index: 1020;
-    width: 100%;
-    left: 0;
-    background: rgba(0,0,0,0.2);
-}
-.widget.system:hover {
-    background: rgba(0,0,0,0.16);
-}
-.close-btn {
-    z-index: 1027;
-    background: transparent;
-    font-size: 15px;
-    color: white;
-    text-align: right;
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-.close-btn:hover {
-    cursor: pointer;
-    color: red;
-}
-.boundary-stretch {
-    z-index: 1025;
-    width: 100%;
-    height: 15px;
-    text-align: center;
-    position: absolute;
-    background: rgba(255,255,255,0.3);
-}
-.boundary-stretch:hover {
-    cursor: pointer;
-    background: rgba(255,255,255,0.6);
-}
-.up-stretch {
-    top: 0;
-}
-.down-stretch {
-    bottom: 0;
 }

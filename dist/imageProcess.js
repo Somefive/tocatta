@@ -86,6 +86,68 @@ var ImageProcess = function () {
 		}
 
 		/**
+   * Get the barline separated measures of a system
+   * @param rcd Reshaped Color Data where system comes from
+   * @param system
+   * @param blackThreshold the depth of color below which will be recognized as black
+   * @param continuousMinPercentage the threshold of percentage of continuous black pixels to be recognized as a barline
+   * @param barlineHalfWidth the half width of a speculated barline
+   * @param measureMinLength the minimal length of continuous columns to be identified as a measure
+   * @returns {Array}
+   */
+
+	}, {
+		key: "getColumnContinuousLines",
+		value: function getColumnContinuousLines(rcd, system) {
+			var blackThreshold = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0.4;
+			var continuousMinPercentage = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0.7;
+			var barlineHalfWidth = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1;
+			var measureMinLength = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 5;
+
+			var rowBegin = system.y,
+			    rowEnd = system.y + system.height,
+			    isBarline = [];
+			system.measures.splice(0, system.measures.length);
+			for (var col = 0; col < rcd.width; ++col) {
+				var maxLength = 0,
+				    current = 0;
+				for (var y = rowBegin; y < rowEnd; ++y) {
+					var isBlack = false;
+					for (var dx = -barlineHalfWidth; dx <= barlineHalfWidth; ++dx) {
+						var x = col + dx;
+						if (x < 0 || x >= rcd.width) continue;
+						var color = rcd.data[y][x][0] + rcd.data[y][x][1] + rcd.data[y][x][2];
+						color = color * rcd.data[y][x][3] / 4 / 256 / 256;
+						if (rcd.data[y][x][3] < 25) color = 1;
+						if (color < blackThreshold) {
+							isBlack = true;
+							break;
+						}
+					}
+					if (isBlack) {
+						current += 1;
+						if (current > maxLength) maxLength += current;
+					} else {
+						current = 0;
+					}
+				}
+				isBarline.push(maxLength > system.height * continuousMinPercentage);
+			}
+			var measureStart = -1;
+			for (var i = 1; i < rcd.width; ++i) {
+				if (measureStart == -1) {
+					if (isBarline[i - 1] && !isBarline[i]) measureStart = i;
+				} else {
+					if (isBarline[i]) {
+						if (i - measureStart > measureMinLength) system.measures.push(new Measure(measureStart, i - 1));
+						measureStart = -1;
+					}
+				}
+			}
+			return system.measures;
+		}
+
+		/**
    * Calculate continuous blocks position. list of [beginAt, length]
    * @param dataSeq
    * @param depthThreshold
@@ -105,7 +167,7 @@ var ImageProcess = function () {
 				if (dataSeq[i] < depthThreshold) {
 					if (beginAt == -1) beginAt = i;
 				} else {
-					if (beginAt >= 0 && i - beginAt > intervalThreshold) cbs.push([beginAt, i - beginAt]);
+					if (beginAt >= 0 && i - beginAt > intervalThreshold) cbs.push(new System(beginAt, i - beginAt));
 					beginAt = -1;
 				}
 			}

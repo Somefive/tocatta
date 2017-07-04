@@ -6,6 +6,14 @@ class System {
 	constructor(y, height) {
 		this.y = y;
 		this.height = height;
+		this.measures = [];
+	}
+}
+
+class Measure {
+	constructor(start, end) {
+		this.start = start;
+		this.end = end;
 	}
 }
 
@@ -35,6 +43,7 @@ class SectorManager {
 	load(imageData) {
 		this.imageData = imageData;
 		this.rcd = new ReshapedColorData(imageData);
+		app.systems.splice(0,app.systems.length);
 	}
 	calcSystems() {
 		if (!this.rcd) return;
@@ -45,7 +54,13 @@ class SectorManager {
 		if (calculate) this.calcSystems();
 		app.systems.splice(0,app.systems.length);
 		this.cbs.forEach((e) => {
-			app.systems.push(new System(e[0], e[1]));
+			app.systems.push(e);
+		});
+	}
+	calcMeasures(system = null) {
+		let systems = (system)?[system]:this.cbs;
+		systems.forEach((e) => {
+			ImageProcess.getColumnContinuousLines(this.rcd, e, 0.7, 0.7, 1, 5);
 		});
 	}
 }

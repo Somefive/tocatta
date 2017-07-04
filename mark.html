@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="css/mark.css"/>
+    <link rel="stylesheet" type="text/css" href="css/components/system.css"/>
     <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css"/>
     <title>Mark</title>
     <script data-main="dist/mark" src="lib/require.min.js"></script>
@@ -13,12 +14,13 @@
         <input type="file" class="btn image-input-btn" id="btn-read-image" onchange="readImage(this.files[0])" hidden accept=".jpg, .jpeg, .png, .gif">
         <button class="btn menu-btn" @click="openReadImageDialog">ReadImage</button>
         <button class="btn menu-btn" @click="autoGenerate">AutoLoad</button>
+        <button class="btn menu-btn" @click="changeSystemEditable">{{(systemEditable)?'ReadOnly':'Edit'}}</button>
     </div>
     <canvas id="page-canvas">
 
     </canvas>
-    <div id="divs">
-        <system-items v-bind:systems="systems"></system-items>
+    <div id="divs" v-bind:style="{width: displayWidth + 'px', left: displayLeftOffset + 'px'}">
+        <system-items v-bind:systems="systems" v-bind:editable="systemEditable"></system-items>
     </div>
 </div>
 </body>

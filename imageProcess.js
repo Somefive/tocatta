@@ -64,6 +64,57 @@ class ImageProcess {
 	}
 	
 	/**
+	 * Get the barline separated measures of a system
+	 * @param rcd Reshaped Color Data where system comes from
+	 * @param system
+	 * @param blackThreshold the depth of color below which will be recognized as black
+	 * @param continuousMinPercentage the threshold of percentage of continuous black pixels to be recognized as a barline
+	 * @param barlineHalfWidth the half width of a speculated barline
+	 * @param measureMinLength the minimal length of continuous columns to be identified as a measure
+	 * @returns {Array}
+	 */
+	static getColumnContinuousLines(rcd, system, blackThreshold = 0.4, continuousMinPercentage = 0.7, barlineHalfWidth = 1, measureMinLength = 5) {
+		let rowBegin = system.y, rowEnd = system.y+system.height, isBarline = [];
+		system.measures.splice(0, system.measures.length);
+		for (let col=0;col<rcd.width;++col) {
+			let maxLength = 0, current = 0;
+			for (let y = rowBegin; y < rowEnd; ++y) {
+				let isBlack = false;
+				for (let dx = -barlineHalfWidth; dx <= barlineHalfWidth; ++dx) {
+					let x = col + dx;
+					if (x < 0 || x >= rcd.width) continue;
+					let color = rcd.data[y][x][0] + rcd.data[y][x][1] + rcd.data[y][x][2];
+					color = color*rcd.data[y][x][3]/4/256/256;
+					if (rcd.data[y][x][3] < 25) color = 1;
+					if (color < blackThreshold) {
+						isBlack = true;
+						break;
+					}
+				}
+				if (isBlack) {
+					current += 1;
+					if (current > maxLength) maxLength += current;
+				} else {
+					current = 0;
+				}
+			}
+			isBarline.push(maxLength > system.height*continuousMinPercentage);
+		}
+		let measureStart = -1;
+		for (let i=1;i<rcd.width;++i) {
+			if (measureStart == -1) {
+				if (isBarline[i-1] && !isBarline[i]) measureStart = i;
+			} else {
+				if (isBarline[i]) {
+					if (i - measureStart > measureMinLength) system.measures.push(new Measure(measureStart, i-1));
+					measureStart = -1;
+				}
+			}
+		}
+		return system.measures;
+	}
+	
+	/**
 	 * Calculate continuous blocks position. list of [beginAt, length]
 	 * @param dataSeq
 	 * @param depthThreshold
@@ -77,7 +128,7 @@ class ImageProcess {
 			if (dataSeq[i] < depthThreshold) {
 				if (beginAt == -1) beginAt = i;
 			} else {
-				if (beginAt >= 0 && (i-beginAt) > intervalThreshold) cbs.push([beginAt, i-beginAt]);
+				if (beginAt >= 0 && (i-beginAt) > intervalThreshold) cbs.push(new System(beginAt, i-beginAt));
 				beginAt = -1;
 			}
 		}

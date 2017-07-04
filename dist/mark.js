@@ -23,6 +23,8 @@ function readImage(file) {
 			    cY = pageCanvas.canvas.height / 2;
 			console.log(cX + " " + cY + " - " + width + " - " + height);
 			pageCanvas.ctx.drawImage(img, cX - width / 2, cY - height / 2, width, height);
+			app.displayWidth = width;
+			app.displayLeftOffset = cX - width / 2;
 			imageData = pageCanvas.ctx.getImageData(cX - width / 2, cY - height / 2, width, height);
 			sectorManager.load(imageData);
 			// sectorManager.drawSystems(true);
@@ -49,14 +51,21 @@ require(['lib/vue.min'], function (_Vue) {
 		el: '#tocatta-app',
 		data: {
 			message: 'Hello Tocatta!',
-			systems: []
+			systems: [],
+			systemEditable: false,
+			displayWidth: 0,
+			displayLeftOffset: 0
 		},
 		methods: {
 			autoGenerate: function autoGenerate() {
 				sectorManager.drawSystems(true);
+				sectorManager.calcMeasures();
 			},
 			openReadImageDialog: function openReadImageDialog() {
 				document.getElementById('btn-read-image').click();
+			},
+			changeSystemEditable: function changeSystemEditable() {
+				this.systemEditable = !this.systemEditable;
 			}
 		}
 	});
